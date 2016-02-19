@@ -1,5 +1,5 @@
 var myApp = angular.module('myApp', ['ngRoute', 'firebase'])
-  .constant('FIREBASE_URL', 'https://boiling-torch-4677.firebaseio.com');
+  .constant('FIREBASE_URL', 'https://boiling-torch-4677.firebaseio.com/');
 
 
 
