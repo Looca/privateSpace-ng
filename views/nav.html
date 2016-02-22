@@ -1,11 +1,14 @@
 <div class="container">
-  <div class="navbar-header">
+  <div class="navbar-header pull-left">
       <a class="navbar-brand navbar-left" href="#">Brand</a>
-  </div>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li><a ng-href="#/login">Login</a></li>
-        <li><a ng-href="#/register">Register</a></li>
+  </div>
+  <p class="navbar-text pull-right" ng-show="currentUser" ng-controller="RegistrationController">Hi {{currentUser.firstname}},
+    <a ng-href="#/login" ng-click="logout()">Logout</a>
+  </p>
+      <ul class="nav navbar-nav navbar-right pull-right">
+        <li><a ng-hide="currentUser" ng-href="#/login">Login</a></li>
+        <li><a ng-hide="currentUser" ng-href="#/register">Register</a></li>
       </ul>
 
 </div>

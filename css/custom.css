@@ -7,3 +7,6 @@ input.ng-touched.ng-valid{
 .validationerror{
   color: red;
 }
+.nav>li {
+  float: left;
+}

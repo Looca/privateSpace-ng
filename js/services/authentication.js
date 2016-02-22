@@ -1,9 +1,19 @@
-myApp.factory('Authentication', ['$rootScope', '$firebaseAuth', '$location', 'FIREBASE_URL', function($rootScope, $firebaseAuth,$location, FIREBASE_URL){
+myApp.factory('Authentication', ['$rootScope', '$firebaseAuth', '$firebaseObject', '$location', 'FIREBASE_URL', function($rootScope, $firebaseAuth,$firebaseObject, $location, FIREBASE_URL){
 
   var ref = new Firebase(FIREBASE_URL);
   var auth = $firebaseAuth(ref);
 
-  return {
+  auth.$onAuth(function(authUser){
+    if(authUser){
+      var userRef = new Firebase(FIREBASE_URL + 'users/' + authUser.uid );
+      var userObj = $firebaseObject(userRef);
+      $rootScope.currentUser = userObj;
+    } else {
+      $rootScope.currentUser = '';
+    }
+  });
+
+  var myObject= {
     login: function(user){
       // https://www.firebase.com/docs/web/api/firebase/authwithpassword.html
       auth.$authWithPassword({
@@ -14,6 +24,12 @@ myApp.factory('Authentication', ['$rootScope', '$firebaseAuth', '$location', 'FI
       }).catch(function(error){
         $rootScope.message = error;
       });
+    },
+    logout: function(){
+      return auth.$unauth();
+    },
+    requireAuth: function(){
+      return auth.$requireAuth();
     },
     register: function(user){
       auth.$createUser({
@@ -30,10 +46,12 @@ myApp.factory('Authentication', ['$rootScope', '$firebaseAuth', '$location', 'FI
             email: user.email
           });
 
-        $rootScope.message = "Welcome " + user.firstname + " , thanks for registering"
+          myObject.login(user);
+
       }).catch(function(error){
         $rootScope.message = error.message;
       });
     }
-  }
+  };
+  return myObject;
 }]);
